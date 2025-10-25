@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import lighter
+import aiohttp  # added for quota activation
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -23,6 +24,11 @@ async def main():
     )
 
     # one-time activation so your account can trade
+    async with aiohttp.ClientSession() as session:
+        await session.post(
+            f"{BASE_URL}/api/v1/volumeQuota",
+            json={"account_index": ACCOUNT_INDEX, "api_key_index": API_KEY_INDEX}
+        )
 
     tx = await client.create_market_order(
         market_index=1,
