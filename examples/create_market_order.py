@@ -4,8 +4,6 @@ import lighter
 
 logging.basicConfig(level=logging.DEBUG)
 
-# The API_KEY_PRIVATE_KEY provided belongs to a dummy account registered on Testnet.
-# It was generated using the setup_system.py script, and serves as an example.
 BASE_URL = "https://testnet.zklighter.elliot.ai"
 API_KEY_PRIVATE_KEY = "cc9c29835382fbd8d958c91cda7afb936e1f1b673ac37e52b43d92dfd07ee694a4f51ec0ca2b2f79"
 ACCOUNT_INDEX = 211
@@ -24,11 +22,14 @@ async def main():
         api_key_index=API_KEY_INDEX,
     )
 
+    # one-time activation so your account can trade
+    await client.use_volume_quota()
+
     tx = await client.create_market_order(
         market_index=1,
         client_order_index=0,
-        base_amount=int(0.0001 * 1e18),  # converts 0.0001 ETH to integer base units
-        avg_execution_price=170000,  # $1700 -- worst acceptable price for the order
+        base_amount=int(0.0001 * 1e18),
+        avg_execution_price=170000,
         is_ask=True,
     )
     print("Create Order Tx:", tx)
