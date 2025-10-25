@@ -27,7 +27,7 @@ async def main():
     tx = await client.create_market_order(
         market_index=1,
         client_order_index=0,
-        base_amount=100,  # 0.1 ETH
+        base_amount=0.0001,  # 0.1 ETH
         avg_execution_price=170000,  # $1700 -- worst acceptable price for the order
         is_ask=True,
     )
