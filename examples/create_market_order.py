@@ -23,7 +23,6 @@ async def main():
     )
 
     # one-time activation so your account can trade
-    await client.use_volume_quota()
 
     tx = await client.create_market_order(
         market_index=1,
