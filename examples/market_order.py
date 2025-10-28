@@ -1,14 +1,15 @@
 import asyncio
 import logging
 import lighter
-import aiohttp  # added for quota activation
 
 logging.basicConfig(level=logging.DEBUG)
 
-BASE_URL = "https://testnet.zklighter.elliot.ai"
-API_KEY_PRIVATE_KEY = "cc9c29835382fbd8d958c91cda7afb936e1f1b673ac37e52b43d92dfd07ee694a4f51ec0ca2b2f79"
-ACCOUNT_INDEX = 211
-API_KEY_INDEX = 2
+# The API_KEY_PRIVATE_KEY provided belongs to a dummy account registered on Testnet.
+# It was generated using the setup_system.py script, and serves as an example.
+BASE_URL = "https://mainnet.zklighter.elliot.ai"
+API_KEY_PRIVATE_KEY = "654ae8cf9e14f270661e0231ea07b38e50e88c1d40228a938cb735a4804b9dedf09fc8c32ad0851b"
+ACCOUNT_INDEX = 259397
+API_KEY_INDEX = 5
 
 
 def trim_exception(e: Exception) -> str:
@@ -23,19 +24,12 @@ async def main():
         api_key_index=API_KEY_INDEX,
     )
 
-    # one-time activation so your account can trade
-    async with aiohttp.ClientSession() as session:
-        await session.post(
-            f"{BASE_URL}/api/v1/volumeQuota",
-            json={"account_index": ACCOUNT_INDEX, "api_key_index": API_KEY_INDEX}
-        )
-
     tx = await client.create_market_order(
-        market_index=1,
+        market_index=0,
         client_order_index=0,
-        base_amount=int(0.0001 * 1e18),
-        avg_execution_price=170000,
-        is_ask=True,
+        base_amount=1,  # 0.000001 ETH
+        avg_execution_price=5000,  # $5000
+        is_ask=False, # Buy
     )
     print("Create Order Tx:", tx)
     await client.close()
